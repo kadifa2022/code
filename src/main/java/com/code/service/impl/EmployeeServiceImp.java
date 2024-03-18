@@ -7,6 +7,7 @@ import com.code.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -29,22 +30,40 @@ public class EmployeeServiceImp implements EmployeeService {
         } catch (IllegalArgumentException e) {
             throw new BusinessException("602", "given employee is null" + e.getMessage());
         } catch (Exception e) {
-            throw new BusinessException("603", "Something wnt wrong in Service layer" + e.getMessage());
+            throw new BusinessException("603", "Something went wrong in Service layer saving the employees" + e.getMessage());
         }
     }
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        try {
+            List<Employee> empList = employeeRepository.findAll();
+            if(empList.isEmpty()){
+                throw new BusinessException(" 604", "List is completely empty, we have nothing to return");
+            }
+            return empList;
+        }catch (Exception e){
+            throw new BusinessException("605", "Something went wrong in Service layers while fetching the all employees " + e.getMessage());
+        }
     }
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
-        return employeeRepository.findById(employeeId).get();
-    }
+        try{
+            return employeeRepository.findById(employeeId).get();
+    }catch (IllegalArgumentException e){
+            throw new BusinessException("606", "given employee id is null, please send some id to be searched" + e.getMessage());
+        }
+        catch (NoSuchElementException e) {
+            throw new BusinessException("607", "given employee id does not exist in DB " + e.getMessage());
+        }
+        }
 
     @Override
     public void deleteByEmpId(Long empId) {
+        try{
         employeeRepository.deleteById(empId);
-
-    }
+        }catch (IllegalArgumentException e) {
+            throw new BusinessException("608", "given employee id is null, please send me some id to be searched " + e.getMessage());
+        }
+        }
 }
