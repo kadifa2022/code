@@ -21,10 +21,11 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public Employee addEmployee(Employee employee) {
-        try {
-            if (employee.getName().isEmpty() || employee.getName().length() == 0) {
+        //try  // we should never put try for validation
+        if (employee.getName().isEmpty() || employee.getName().length() == 0) {
                 throw new BusinessException("601 ", "Please send proper name, It blank ");
-            }
+        }
+        try {  // we should always use try with the repository code
             Employee savedEmployee = employeeRepository.save(employee);
             return savedEmployee;
         } catch (IllegalArgumentException e) {
@@ -35,16 +36,17 @@ public class EmployeeServiceImp implements EmployeeService {
     }
     @Override
     public List<Employee> getAllEmployees() {
+        List<Employee> empList = null;
         try {
-            List<Employee> empList = employeeRepository.findAll();
-            if(empList.isEmpty()){
-                throw new BusinessException(" 604", "List is completely empty, we have nothing to return");
-            }
-            return empList;
-        }catch (Exception e){
+            empList = employeeRepository.findAll();
+        } catch (Exception e) {
             throw new BusinessException("605", "Something went wrong in Service layers while fetching the all employees " + e.getMessage());
         }
-    }
+        if (empList.isEmpty())
+            throw new BusinessException(" 604", "List is completely empty, we have nothing to return");
+            return empList;
+        }
+
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
