@@ -1,6 +1,7 @@
 package com.code.service.impl;
 
 import com.code.custom_exception.BusinessException;
+import com.code.custom_exception.EmptyInputException;
 import com.code.entity.Employee;
 import com.code.repository.EmployeeRepository;
 import com.code.service.EmployeeService;
@@ -23,16 +24,16 @@ public class EmployeeServiceImp implements EmployeeService {
     public Employee addEmployee(Employee employee) {
         //try  // we should never put try for validation
         if (employee.getName().isEmpty() || employee.getName().length() == 0) {
-                throw new BusinessException("601 ", "Please send proper name, It blank ");
+                throw new EmptyInputException("601 ", "Input field are empty");
         }
-        try {  // we should always use try with the repository code
+//        try {  // we should always use try with the repository code
             Employee savedEmployee = employeeRepository.save(employee);
             return savedEmployee;
-        } catch (IllegalArgumentException e) {
-            throw new BusinessException("602", "given employee is null" + e.getMessage());
-        } catch (Exception e) {
-            throw new BusinessException("603", "Something went wrong in Service layer saving the employees" + e.getMessage());
-        }
+//        } catch (IllegalArgumentException e) {
+//            throw new BusinessException("602", "given employee is null" + e.getMessage());
+//        } catch (Exception e) {
+//            throw new BusinessException("603", "Something went wrong in Service layer saving the employees" + e.getMessage());
+//        }
     }
     @Override
     public List<Employee> getAllEmployees() {
@@ -40,10 +41,10 @@ public class EmployeeServiceImp implements EmployeeService {
         try {
             empList = employeeRepository.findAll();
         } catch (Exception e) {
-            throw new BusinessException("605", "Something went wrong in Service layers while fetching the all employees " + e.getMessage());
+            throw new BusinessException("604", "Something went wrong in Service layers while fetching the all employees " + e.getMessage());
         }
         if (empList.isEmpty())
-            throw new BusinessException(" 604", "List is completely empty, we have nothing to return");
+            throw new BusinessException(" 605", "List is completely empty, we have nothing to return");
             return empList;
         }
 
