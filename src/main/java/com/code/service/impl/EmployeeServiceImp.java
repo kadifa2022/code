@@ -51,14 +51,14 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
-        try{
+      //  try{
             return employeeRepository.findById(employeeId).get();
-    }catch (IllegalArgumentException e){
-            throw new BusinessException("606", "given employee id is null, please send some id to be searched" + e.getMessage());
-        }
-        catch (NoSuchElementException e) {
-            throw new BusinessException("607", "given employee id does not exist in DB " + e.getMessage());
-        }
+//    }catch (IllegalArgumentException e){
+//            throw new BusinessException("606", "given employee id is null, please send some id to be searched" + e.getMessage());
+//        }
+//        catch (NoSuchElementException e) {
+//            throw new BusinessException("607", "given employee id does not exist in DB " + e.getMessage());
+//        }
         }
 
     @Override
