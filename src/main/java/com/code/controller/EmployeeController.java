@@ -72,6 +72,20 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(savedEmployee, HttpStatus.CREATED);
 
     }
+    @GetMapping("/")
+    public String home(){
+        return "<h1>welcome</h1>";
+    }
+
+    @GetMapping("/user")
+    public String user(){
+        return "<h1>Hi User</h1>";
+    }
+    @GetMapping("/admin")
+    public String admin(){
+        return "<h1> Hi Admin</h1>";
+    }
+
 
 
 
